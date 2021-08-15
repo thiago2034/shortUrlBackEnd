@@ -71,8 +71,8 @@ def get_all_url(session: any, per_pages: int, count: int) -> list:
     return urls
 
 
-def get_all_url_active(session: any, base_url: str) -> list:
-    urls = [create_body_short_url(url['hash'], url['expiration_date'], url['base_url'], base_url)
+def get_all_url_active(session: any) -> list:
+    urls = [parse_json(url)
             for url in session['url'].find({"status": 1})]
     return urls
 
