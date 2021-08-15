@@ -34,11 +34,11 @@ def user_exist(username: str, session: any) -> bool:
 
 
 def hash_exist(hash: str, session: any) -> bool:
-    hash = session['login'].find_one(hash)
+    hash = session['login'].find_one({"hash": hash})
     if hash is not None:
-        return False
-    else:
         return True
+    else:
+        return False
 
 
 def create_body_short_url(url_encurtada: str, data_expiracao: int, url_base: str, url_local: str) -> object:

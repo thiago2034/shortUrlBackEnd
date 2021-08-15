@@ -1,6 +1,7 @@
 import json
 import hashlib
 import uuid
+import math
 
 import services
 
@@ -40,11 +41,11 @@ def short_url():
     if 'url' in body:
         url = body['url']
     else:
-        return json.dumps({"ERROR": "Insira a url no body"}), 400
+        return json.dumps({"mensagem": "Insira a url no body"}), 400
 
-    if 'url_encurtada' in body:
-        if not services.hash_exist(body['url_encurtada'], session):
-            url_encurtada = body['url_encurtada']
+    if 'shortUrl' in body:
+        if not services.hash_exist(body['shortUrl'], session):
+            url_encurtada = body['shortUrl']
         else:
             return json.dumps({"mensagem": "Essa url já está sendo utilizada"}), 400
     else:
@@ -53,17 +54,14 @@ def short_url():
         h.update(str(unique_id).encode())
         url_encurtada = h.hexdigest()
 
-    if 'data_expiracao' in body:
-        data_expiracao = body['data_expiracao']
+    if 'expirateDate' in body:
+        data_expiracao = body['expirateDate']
     else:
         data_expiracao = 7
 
-    try:
-        session['url'].insert_one(
+    session['url'].insert_one(
             services.create_body_short_url(url_encurtada, data_expiracao, url, URL_BASE)
         )
-    except:
-        return json.dumps({"mensagem": "Usuario já existe"}), 400
 
     return json.dumps({"data": URL_BASE + url_encurtada})
 
@@ -77,7 +75,7 @@ def getAllUrl(pages: int = 1):
 
     return json.dumps({
                        "pages": pages,
-                       "count_pages": round(count_pages/10),
+                       "count_pages": math.ceil(count_pages/10),
                        "data": services.get_all_url(session, per_page, count)
                        })
 
@@ -87,7 +85,7 @@ def create_user():
     body = request.get_json()
 
     if not services.verify_username_password(body):
-        return json.dumps({'ERROR': 'Por favor insira o username e o password'}), 400
+        return json.dumps({'mensagem': 'Por favor insira o username e o password'}), 400
 
     username = body['username']
     password = body['password']
@@ -115,7 +113,7 @@ def validate_user():
     body = request.get_json()
 
     if not services.verify_username_password(body):
-        return json.dumps({'ERROR': 'Por favor insira o username e o password'}), 400
+        return json.dumps({'mensagem': 'Por favor insira o username e o password'}), 400
 
     username = body['username']
     password = body['password']
@@ -127,8 +125,8 @@ def validate_user():
 
     try:
         if not services.autenticate_user(username, password, session):
-            return json.dumps({'message': 'usuario autenticado'}), 200
+            return json.dumps({'mensagem': 'usuario autenticado'}), 200
         else:
-            return json.dumps({"message": "Usuario ou senha incorreta"}), 400
+            return json.dumps({"mensagem": "Usuario ou senha incorreta"}), 400
     except:
         return json.dumps({"mensagem": "erro na autenticacao do usuario"}), 500
