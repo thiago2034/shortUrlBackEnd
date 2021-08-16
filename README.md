@@ -40,3 +40,7 @@ Para executar o projeto, execute o seguinte comando no cmd:
 ```bash
 Flask run
 ```
+
+##Rotina
+
+O projeto possui um arquivo chamado "expirationDate.py" esse arquivo é responsável por alterar o status das url's para 0(inativas) nas url's que possua as datas já expiradas, para que ele funciona corretamente deverá configurar esse script em um cron ou algum progama de agendamento de tarefas de sua preferência para que ele execute todos os dias, mantendo assim todas as url's expiradas como inativas. 
