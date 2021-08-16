@@ -2,7 +2,9 @@
 
 
 O shortUrlBackEnd é um projeto que tem como o objetivo fazer o encurtamento de url's, utilizando as tecnologias: mongodb, python e flask.
+
 O banco de dados está no mongoDB Atlas, por isso para seu funcionamento é de suma importância que o .env esteja configurado corretamente.
+
 Também possui no projeto uma endpoints para criação de usuario e autenticação, temos apenas 1 login já cadastrado podendo assim criar mais utilizando o endpoint de criação,
 o login já criado é o seguinte:
 {
